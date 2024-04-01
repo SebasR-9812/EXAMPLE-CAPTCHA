@@ -1,0 +1,92 @@
+<!doctype html>
+<html class="no-js" lang=""
+  style="width: fit-content; height: fit-content; margin: 0;padding: 0; display:flex;justify-content: center;">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="content-language" content="en" />
+
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
+
+  <script src="https://www.google.com/recaptcha/enterprise.js?onload=onloadCallback&render=explicit" async defer>
+  </script>
+</head>
+
+<body onload="addObservers()" style="width: fit-content;height: fit-content; margin: 0;padding: 0;
+display: inline-block;justify-content: center;">
+  <div id="html_element" style="width: fit-content;height: fit-content;margin: 0;padding: 0; display: inline-block;justify-content: center;
+  "></div>
+
+  <script type="text/javascript">
+    let challengeVisible = false
+    let currentToken;
+
+    var onloadCallback = function () {
+      grecaptcha.enterprise.render('html_element', {
+        'sitekey': '6LfrDqspAAAAABTkibuBKBfPQhAOCRdu_-21A_hz',
+        'callback': verifyCallback,
+        'expired-callback': onExpired
+      });
+    };
+
+    function verifyCallback(token) {
+      currentToken = token;
+      try {
+        RecaptchaFlutterChannel.postMessage(token);
+      } catch (e) {
+        RecaptchaFlutterChannel.postMessage(e);
+      }
+    }
+
+    function onExpired() {
+      ExpiredChannel.postMessage('expired')
+    }
+
+    function getElementByXpath(path) {
+      return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+    }
+    function addObservers() {
+      getChallengeElement();
+    }
+
+    function getChallengeElement() {
+      let challengeElement = getElementByXpath('/html/body/div[2]');
+      if (challengeElement === null) {
+        setTimeout(() => {
+          getChallengeElement()
+        }, 500)
+      } else {
+        addObserverToStyle(challengeElement, 'visibility', (styleValue) => {
+          if (styleValue === 'visible') {
+            if (!challengeVisible) {
+              ChallengeChannel.postMessage('visible')
+            }
+            challengeVisible = true;
+          } else {
+            if (challengeVisible) {
+              ChallengeChannel.postMessage('invisible')
+            }
+            challengeVisible = false;
+          }
+        })
+      }
+    }
+
+    function addObserverToStyle(element, cssAttribute, onStyleChange) {
+      var observer = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutationRecord) {
+          let style = mutationRecord.target.style
+          if (cssAttribute in style) {
+            onStyleChange(style[cssAttribute])
+          }
+        });
+      });
+      observer.observe(element, { attributes: true, attributeFilter: ['style'] });
+    }
+  </script>
+</body>
+
+</html>
