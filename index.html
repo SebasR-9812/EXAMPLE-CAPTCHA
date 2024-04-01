@@ -37,7 +37,7 @@ display: inline-block;justify-content: center;">
       try {
         RecaptchaFlutterChannel.postMessage(token);
       } catch (e) {
-        RecaptchaFlutterChannel.postMessage(e);
+        RecaptchaFlutterChannel.postMessage(e.message);
       }
     }
 
