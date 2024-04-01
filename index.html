@@ -28,7 +28,8 @@ display: inline-block;justify-content: center;">
       grecaptcha.enterprise.render('html_element', {
         'sitekey': '6LfrDqspAAAAABTkibuBKBfPQhAOCRdu_-21A_hz',
         'callback': verifyCallback,
-        'expired-callback': onExpired
+        'expired-callback': onExpired,
+        'error-callback': verifyCallback
       });
     };
 
@@ -37,7 +38,7 @@ display: inline-block;justify-content: center;">
       try {
         RecaptchaFlutterChannel.postMessage(token);
       } catch (e) {
-        RecaptchaFlutterChannel.postMessage(e.message);
+        RecaptchaFlutterChannel.postMessage('Esto esta errado');
       }
     }
 
