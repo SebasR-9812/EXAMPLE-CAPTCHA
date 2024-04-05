@@ -29,21 +29,21 @@ display: inline-block;justify-content: center;">
         'sitekey': '6LfrDqspAAAAABTkibuBKBfPQhAOCRdu_-21A_hz',
         'callback': verifyCallback,
         'expired-callback': onExpired,
-        'error-callback': verifyCallback
+        'error-callback': verifyCallback,
       });
     };
 
     function verifyCallback(token) {
       currentToken = token;
-      try {
-        RecaptchaFlutterChannel.postMessage(token);
-      } catch (e) {
-        RecaptchaFlutterChannel.postMessage('Esto esta errado');
-      }
+      // try {
+      //   RecaptchaFlutterChannel.postMessage(token);
+      // } catch (e) {
+      //   RecaptchaFlutterChannel.postMessage('Esto esta errado');
+      // }
     }
 
     function onExpired() {
-      ExpiredChannel.postMessage('expired')
+      // ExpiredChannel.postMessage('expired')
     }
 
     function getElementByXpath(path) {
@@ -63,12 +63,12 @@ display: inline-block;justify-content: center;">
         addObserverToStyle(challengeElement, 'visibility', (styleValue) => {
           if (styleValue === 'visible') {
             if (!challengeVisible) {
-              ChallengeChannel.postMessage('visible')
+              // ChallengeChannel.postMessage('visible')
             }
             challengeVisible = true;
           } else {
             if (challengeVisible) {
-              ChallengeChannel.postMessage('invisible')
+              // ChallengeChannel.postMessage('invisible')
             }
             challengeVisible = false;
           }
