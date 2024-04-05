@@ -23,6 +23,19 @@ display: inline-block;justify-content: center;">
   <script type="text/javascript">
     let challengeVisible = false
     let currentToken;
+    const iframe = document.querySelector('iframe'); //
+    const iframeDocument = iframe.contentDocument;
+    const element = iframeDocument.querySelector('.rc-imageselect-incorrect-response');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // El elemento ha aparecido en la pantalla
+          console.log('El elemento ha aparecido en la pantalla');
+        }
+      });
+    });
+
+    observer.observe(element);
 
     var onloadCallback = function () {
       grecaptcha.enterprise.render('html_element', {
