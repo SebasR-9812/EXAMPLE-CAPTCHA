@@ -23,7 +23,18 @@ display: inline-block;justify-content: center;">
   <script type="text/javascript">
     let challengeVisible = false
     let currentToken;
-    const iframe = document.querySelector('iframe'); //
+    const element = document.querySelector('.rc-imageselect-incorrect-response');
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'childList') {
+          if (mutation.addedNodes.length > 0) {
+            // El elemento se ha agregado al DOM
+            console.log('El elemento se ha agregado al DOM');
+          }
+        }
+      });
+    });
+    observer.observe(document.body, { childList: true });
 
     var onloadCallback = function () {
       grecaptcha.enterprise.render('html_element', {
