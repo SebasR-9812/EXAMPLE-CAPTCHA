@@ -23,6 +23,7 @@ display: inline-block;justify-content: center;">
   <script type="text/javascript">
     let challengeVisible = false
     let currentToken;
+    const container = document.getElementById('rc-anchor-container');
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type === 'childList') {
@@ -34,7 +35,10 @@ display: inline-block;justify-content: center;">
       });
     });
     observer.observe(document.body, { childList: true });
-
+    container.addEventListener(('click'), () => {
+      let element = document.querySelector('.rc-imageselect-incorrect-response');
+      console.log(element);
+    })
     var onloadCallback = function () {
       grecaptcha.enterprise.render('html_element', {
         'sitekey': '6LfrDqspAAAAABTkibuBKBfPQhAOCRdu_-21A_hz',
