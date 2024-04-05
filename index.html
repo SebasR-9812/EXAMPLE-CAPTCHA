@@ -24,9 +24,6 @@ display: inline-block;justify-content: center;">
     let challengeVisible = false
     let currentToken;
     const iframe = document.querySelector('iframe'); //
-    const iframeDocument = iframe.contentDocument;
-    const element = iframeDocument.querySelector('.rc-imageselect-incorrect-response');
-    
 
     var onloadCallback = function () {
       grecaptcha.enterprise.render('html_element', {
