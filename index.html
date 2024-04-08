@@ -23,22 +23,7 @@ display: inline-block;justify-content: center;">
   <script type="text/javascript">
     let challengeVisible = false
     let currentToken;
-    const container = document.getElementById('rc-anchor-container');
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'childList') {
-          if (mutation.addedNodes.length > 0) {
-            let element = document.querySelector('.rc-imageselect-incorrect-response');
-            console.log(element);
-          }
-        }
-      });
-    });
-    observer.observe(document.body, { childList: true });
-    container.addEventListener(('click'), () => {
-      let element = document.querySelector('.rc-imageselect-incorrect-response');
-      console.log(element);
-    })
+
     var onloadCallback = function () {
       grecaptcha.enterprise.render('html_element', {
         'sitekey': '6LfrDqspAAAAABTkibuBKBfPQhAOCRdu_-21A_hz',
@@ -50,15 +35,15 @@ display: inline-block;justify-content: center;">
 
     function verifyCallback(token) {
       currentToken = token;
-      // try {
-      //   RecaptchaFlutterChannel.postMessage(token);
-      // } catch (e) {
-      //   RecaptchaFlutterChannel.postMessage('Esto esta errado');
-      // }
+      try {
+        RecaptchaFlutterChannel.postMessage(token);
+      } catch (e) {
+        RecaptchaFlutterChannel.postMessage('Esto esta errado');
+      }
     }
 
     function onExpired() {
-      // ExpiredChannel.postMessage('expired')
+      ExpiredChannel.postMessage('expired')
     }
 
     function getElementByXpath(path) {
@@ -78,12 +63,12 @@ display: inline-block;justify-content: center;">
         addObserverToStyle(challengeElement, 'visibility', (styleValue) => {
           if (styleValue === 'visible') {
             if (!challengeVisible) {
-              // ChallengeChannel.postMessage('visible')
+              ChallengeChannel.postMessage('visible')
             }
             challengeVisible = true;
           } else {
             if (challengeVisible) {
-              // ChallengeChannel.postMessage('invisible')
+              ChallengeChannel.postMessage('invisible')
             }
             challengeVisible = false;
           }
